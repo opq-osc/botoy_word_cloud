@@ -1,0 +1,4 @@
+botoy
+tinydb
+wordcloud
+jieba
