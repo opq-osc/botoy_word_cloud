@@ -1,5 +1,6 @@
 import asyncio
 import re
+from pathlib import Path
 
 import jieba
 from botoy import GroupMsg, logger, S
@@ -11,8 +12,10 @@ from .database import log_words, reset_database
 from .word_cloud import build_word_cloud_pic, send_to_all_group
 
 __doc__ = "词云"
+curFileDir = Path(__file__).absolute().parent
 
-jieba.initialize()
+# jieba.initialize()
+jieba.load_userdict(str(curFileDir / "dict.txt"))
 
 scheduler.add_job(
     send_to_all_group,

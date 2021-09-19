@@ -1,5 +1,6 @@
-from ._shared import tmpDB
 from botoy import logger
+
+from ._shared import tmpDB
 
 
 def reset_database():

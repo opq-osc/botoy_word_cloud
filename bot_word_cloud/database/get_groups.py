@@ -1,5 +1,3 @@
-from tinydb import where
-
 from ._shared import tmpDB
 
 
