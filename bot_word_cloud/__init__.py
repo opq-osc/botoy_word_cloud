@@ -16,6 +16,7 @@ curFileDir = Path(__file__).absolute().parent
 
 # jieba.initialize()
 jieba.load_userdict(str(curFileDir / "dict.txt"))
+jieba.analyse.set_stop_words(str(curFileDir / "stopwords.txt"))
 
 scheduler.add_job(
     send_to_all_group,

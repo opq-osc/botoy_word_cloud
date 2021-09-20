@@ -10,17 +10,20 @@ from .database import get_words, get_all_groups
 
 curFileDir = Path(__file__).absolute().parent
 
+
 # mk = imageio.imread(curFileDir / "1.png")
-stopwords = [line.strip() for line in open(curFileDir / "stopwords.txt", encoding='UTF-8').readlines()]
+# stopwords = [line.strip() for line in open(curFileDir / "stopwords.txt", encoding='UTF-8').readlines()]
 
 
 def build_word_cloud_pic(groupid):
     word_cloud = WordCloud(
-        width=550,
-        height=550,
+        width=500,
+        height=500,
         scale=2,
+        max_words=700,
+        max_font_size=270,
         background_color='white',
-        stopwords=set(stopwords),
+        # stopwords=set(stopwords),
         # mask=mk,
         # font_path=str(curFileDir / '方正黑体简体.ttf')
         # max_font_size=100,  # 设置字体最大值
