@@ -45,9 +45,10 @@ async def receive_group_msg(ctx: GroupMsg):
         await S.aimage(word_cloud_pic_b64)
         logger.success('词云')
     else:
-        words = jieba.lcut(re.sub(r'\[表情\d+]', '', parser_msg(ctx)))  # 过滤表情,并分词
-        words_finish = [word for word in words if word not in stopwords]  # 去除stopwords
-        logger.success(
-            f"[{ctx.FromGroupName}:{ctx.FromGroupId}] ; [{ctx.FromNickName}:{ctx.FromUserId}] 分词-->{words_finish}"
-        )
-        log_words(ctx.FromGroupId, words_finish)
+        if msg := parser_msg(ctx):
+            words = jieba.lcut(re.sub(r'\[表情\d+]', '', msg))  # 过滤表情,并分词
+            words_finish = [word for word in words if word not in stopwords]  # 去除stopwords
+            logger.success(
+                f"[{ctx.FromGroupName}:{ctx.FromGroupId}] ; [{ctx.FromNickName}:{ctx.FromUserId}] 分词-->{words_finish}"
+            )
+            log_words(ctx.FromGroupId, words_finish)

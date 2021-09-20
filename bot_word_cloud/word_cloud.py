@@ -15,7 +15,7 @@ curFileDir = Path(__file__).absolute().parent
 # mk = imageio.imread(curFileDir / "1.png")
 
 def parser_msg(ctx: GroupMsg):
-    msg_data = gp.pic(ctx) or gp.at(ctx) or gp.reply(ctx)
+    msg_data = gp.pic(ctx) or gp.at(ctx) or gp.reply(ctx) or ctx
     return msg_data.Content
 
 
