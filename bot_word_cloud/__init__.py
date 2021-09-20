@@ -24,8 +24,8 @@ jieba.load_userdict(str(curFileDir / "dict.txt"))
 scheduler.add_job(
     send_to_all_group,
     "cron",
-    hour=19,
-    minute=34,
+    hour=21,
+    minute=00,
     misfire_grace_time=30,
 )  # 每天21点把词云发送到所有群
 
