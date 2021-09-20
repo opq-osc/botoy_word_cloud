@@ -1,8 +1,8 @@
 from botoy import logger
 
-from ._shared import tmpDB
+from ._shared import wordDB
 
 
 def reset_database():
     logger.warning('重置词云数据库')
-    tmpDB.drop_table("wordcloud")
+    wordDB.drop_table("wordcloud")

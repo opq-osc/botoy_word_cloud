@@ -12,7 +12,7 @@ from .database import log_words, reset_database
 from .word_cloud import build_word_cloud_pic, send_to_all_group, parser_msg
 
 __doc__ = "词云"
-curFileDir = Path(__file__).absolute().parent
+curFileDir = Path(__file__).parent
 
 # jieba.initialize()
 stopwords = [
@@ -32,10 +32,10 @@ scheduler.add_job(
 scheduler.add_job(
     reset_database,
     "cron",
-    hour=00,
+    hour=4,
     minute=00,
     misfire_grace_time=30,
-)  # 每天凌晨重置数据库
+)  # 每天4点重置数据库
 
 
 @deco.ignore_botself
@@ -57,9 +57,9 @@ async def receive_group_msg(ctx: GroupMsg):
                 jieba.lcut, re.sub(r"\[表情\d+]", "", msg)
             )  # 过滤表情,并分词
             words_finish = [
-                word for word in words if word not in stopwords
+                word for word in words if word not in stopwords and not word.isspace()
             ]  # 去除stopwords
             logger.success(
                 f"[{ctx.FromGroupName}:{ctx.FromGroupId}] ; [{ctx.FromNickName}:{ctx.FromUserId}] 分词-->{words_finish}"
             )
-            log_words(ctx.FromGroupId, words_finish)
+            await log_words(ctx.FromGroupId, words_finish)

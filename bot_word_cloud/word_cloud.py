@@ -14,7 +14,7 @@ from wordcloud import WordCloud
 
 from .database import get_words, get_all_groups
 
-curFileDir = Path(__file__).absolute().parent
+curFileDir = Path(__file__).parent
 
 
 # mk = imageio.imread(curFileDir / "1.png")
