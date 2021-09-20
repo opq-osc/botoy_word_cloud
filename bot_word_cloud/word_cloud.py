@@ -3,7 +3,8 @@ import time
 from io import BytesIO
 from pathlib import Path
 
-from botoy import Action, jconfig, logger
+from botoy import Action, jconfig, logger, GroupMsg
+from botoy.parser import group as gp
 from wordcloud import WordCloud
 
 from .database import get_words, get_all_groups
@@ -12,6 +13,10 @@ curFileDir = Path(__file__).absolute().parent
 
 
 # mk = imageio.imread(curFileDir / "1.png")
+
+def parser_msg(ctx: GroupMsg):
+    msg_data = gp.pic(ctx) or gp.at(ctx) or gp.reply(ctx)
+    return msg_data.Content
 
 
 def build_word_cloud_pic(groupid):
