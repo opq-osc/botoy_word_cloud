@@ -4,6 +4,7 @@ import time
 from io import BytesIO
 from pathlib import Path
 
+import ujson as json
 from botoy import Action, jconfig, logger, GroupMsg
 from botoy.parser import group as gp
 from wordcloud import WordCloud
@@ -19,6 +20,11 @@ def parser_msg(ctx: GroupMsg):
     if msg_data := gp.reply(ctx) or gp.pic(ctx):
         return re.sub(
             "@.* ", "", msg_data.Content
+        )
+    elif ctx.MsgType == "ReplayMsg":
+        msg = json.loads(ctx.Content)
+        return re.sub(
+            f"@{msg['UserExt'][0]['QQNick']}\\s+", "", msg["Content"]
         )
     elif msg_data := gp.at(ctx) or ctx:
         return msg_data.Content
