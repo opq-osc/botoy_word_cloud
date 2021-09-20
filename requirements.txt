@@ -3,3 +3,4 @@ ujson
 tinydb
 wordcloud
 jieba
+tinyrecord
