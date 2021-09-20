@@ -36,7 +36,7 @@ scheduler.add_job(
 
 
 @deco.ignore_botself
-@deco.these_msgtypes(MsgTypes.TextMsg)
+@deco.these_msgtypes(MsgTypes.TextMsg, MsgTypes.AtMsg, MsgTypes.PicMsg, MsgTypes.ReplyMsg)
 async def receive_group_msg(ctx: GroupMsg):
     if ctx.Content == '词云':
         # word_cloud_pic_b64 = build_word_cloud_pic(ctx.FromGroupId)
