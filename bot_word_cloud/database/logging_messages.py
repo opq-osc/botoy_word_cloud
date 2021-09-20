@@ -13,13 +13,15 @@ def log_words(groupid, words: list):
     :return:
     """
     with transaction(word_table) as tr:
-        if data_tmp := word_table.get(where("group") == groupid):  # 如果有数据
-            tr.update(
-                {"words": (data_tmp["words"] + words)},
-                where("group") == groupid
-            )
-        else:  # 没数据
-            logger.info(f'词云: 首次记录{groupid}')
-            tr.insert(
-                {"group": groupid, "words": words}
-            )
+        with tr.lock:
+            if data_tmp := word_table.get(where("group") == groupid):  # 如果有数据
+                tr.update(
+                    {"words": (data_tmp["words"] + words)},
+                    where("group") == groupid
+                )
+            else:  # 没数据
+                logger.info(f'词云: 首次记录{groupid}')
+                tr.insert(
+                    {"group": groupid, "words": words}
+                )
+
