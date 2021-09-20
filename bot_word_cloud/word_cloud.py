@@ -46,10 +46,10 @@ def parser_msg(ctx: GroupMsg):
 @to_async
 def build_word_cloud_pic(groupid):
     word_cloud = WordCloud(
-        width=500,
-        height=500,
+        width=450,
+        height=450,
         scale=2,
-        max_words=700,
+        max_words=400,
         max_font_size=270,
         background_color="white",
         # stopwords=set(stopwords),
