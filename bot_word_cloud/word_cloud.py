@@ -43,7 +43,7 @@ def build_word_cloud_pic(groupid):
         # font_path=str(curFileDir / '方正黑体简体.ttf')
         # max_font_size=100,  # 设置字体最大值
         # random_state=50,  # 设置随机生成状态，即多少种配色方案
-        font_path=str(curFileDir / 'msyh.ttc')
+        font_path=str(curFileDir / 'font.ttc')
     )
     word_cloud.generate(' '.join(get_words(groupid)))
     img = word_cloud.to_image()
