@@ -12,7 +12,6 @@ curFileDir = Path(__file__).absolute().parent
 
 
 # mk = imageio.imread(curFileDir / "1.png")
-# stopwords = [line.strip() for line in open(curFileDir / "stopwords.txt", encoding='UTF-8').readlines()]
 
 
 def build_word_cloud_pic(groupid):

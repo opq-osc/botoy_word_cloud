@@ -15,8 +15,8 @@ __doc__ = "词云"
 curFileDir = Path(__file__).absolute().parent
 
 # jieba.initialize()
+stopwords = [line.strip() for line in open(curFileDir / "stopwords.txt", encoding='UTF-8').readlines()]
 jieba.load_userdict(str(curFileDir / "dict.txt"))
-jieba.analyse.set_stop_words(str(curFileDir / "stopwords.txt"))
 
 scheduler.add_job(
     send_to_all_group,
@@ -46,8 +46,8 @@ async def receive_group_msg(ctx: GroupMsg):
         logger.success('词云')
     else:
         words = jieba.lcut(re.sub(r'\[表情\d+]', '', ctx.Content))  # 过滤表情,并分词
-        # words_finish = del_stopwords(words)  # 去除stopwords
+        words_finish = [word for word in words if word not in stopwords]  # 去除stopwords
         logger.success(
-            f"[{ctx.FromGroupName}:{ctx.FromGroupId}] ; [{ctx.FromNickName}:{ctx.FromUserId}] 分词-->{words}"
+            f"[{ctx.FromGroupName}:{ctx.FromGroupId}] ; [{ctx.FromNickName}:{ctx.FromUserId}] 分词-->{words_finish}"
         )
-        log_words(ctx.FromGroupId, words)
+        log_words(ctx.FromGroupId, words_finish)
