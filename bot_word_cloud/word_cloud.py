@@ -1,4 +1,5 @@
 import base64
+import re
 import time
 from io import BytesIO
 from pathlib import Path
@@ -15,8 +16,12 @@ curFileDir = Path(__file__).absolute().parent
 # mk = imageio.imread(curFileDir / "1.png")
 
 def parser_msg(ctx: GroupMsg):
-    msg_data = gp.pic(ctx) or gp.at(ctx) or gp.reply(ctx) or ctx
-    return msg_data.Content
+    if msg_data := gp.reply(ctx) or gp.pic(ctx):
+        return re.sub(
+            "@.* ", "", msg_data.Content
+        )
+    elif msg_data := gp.at(ctx) or ctx:
+        return msg_data.Content
 
 
 def build_word_cloud_pic(groupid):
