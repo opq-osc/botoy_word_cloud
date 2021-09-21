@@ -57,7 +57,7 @@ async def receive_group_msg(ctx: GroupMsg):
                 jieba.lcut, re.sub(r"\[表情\d+]", "", msg)
             )  # 过滤表情,并分词
             words_finish = [
-                word for word in words if word not in stopwords and not word.isspace()
+                word for word in words if word not in stopwords and not word.isspace() and word.isprintable()
             ]  # 去除stopwords
             logger.success(
                 f"[{ctx.FromGroupName}:{ctx.FromGroupId}] ; [{ctx.FromNickName}:{ctx.FromUserId}] 分词-->{words_finish}"
