@@ -64,4 +64,5 @@ async def receive_group_msg(ctx: GroupMsg):
             logger.success(
                 f"[{ctx.FromGroupName}:{ctx.FromGroupId}] ; [{ctx.FromNickName}:{ctx.FromUserId}] 分词-->{words_finish}"
             )
-            await log_words(ctx.FromGroupId, words_finish)
+            if words_finish:
+                await log_words(ctx.FromGroupId, words_finish)
