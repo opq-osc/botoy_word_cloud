@@ -48,6 +48,7 @@ scheduler.add_job(
 )
 async def receive_group_msg(ctx: GroupMsg):
     if ctx.Content == "词云":
+        await S.atext("正在合成词云...")
         word_cloud_pic_b64 = await build_word_cloud_pic(ctx.FromGroupId)
         await S.aimage(word_cloud_pic_b64)
         logger.success("词云")
