@@ -1,3 +1,4 @@
+from botoy import logger
 from tinydb import where
 from tinyrecord import transaction
 
@@ -12,5 +13,7 @@ def get_words(groupid) -> dict:
     if data_tmp:
         for k in set(data_tmp["words"]):
             freq_dict[k] = data_tmp["words"].count(k)
-        return dict(sorted(freq_dict.items(), key=lambda d: d[1], reverse=True)[:85])  # 按照value从大到小排序
+            dict_finish = dict(sorted(freq_dict.items(), key=lambda d: d[1], reverse=True)[:85])
+            logger.success(dict_finish)
+        return dict_finish  # 按照value从大到小排序
     return {'无': 1}
