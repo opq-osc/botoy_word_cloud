@@ -28,19 +28,7 @@ def parser_msg(ctx: GroupMsg):
         return re.sub(f"@{msg['UserExt'][0]['QQNick']}\\s+", "", msg["Content"])
     elif msg_data := gp.at(ctx) or ctx:
         return msg_data.Content
-    # if data := gp.pic(ctx):
-    #     print('pic')
-    # elif data := gp.at(ctx):
-    #     print('at')
-    #     msg = re.sub(data.UserExt["QQNick"], '', data.Content)
-    # elif data := gp.reply(ctx):
-    #     print('rep')
-    #     msg = re.sub(data.UserExt["QQNick"], '', data.Content)
-    # else:
-    #     print('?')
-    #     msg = ctx.Content
-    # print(msg)
-    # return msg
+
 
 
 @to_async
@@ -49,8 +37,8 @@ def build_word_cloud_pic(groupid):
         width=450,
         height=450,
         scale=2,
-        max_words=400,
-        max_font_size=270,
+        max_words=200,
+        max_font_size=250,
         background_color="white",
         # stopwords=set(stopwords),
         # mask=mk,
@@ -59,7 +47,8 @@ def build_word_cloud_pic(groupid):
         # random_state=50,  # 设置随机生成状态，即多少种配色方案
         font_path=str(curFileDir / "LXGWWenKai-Regular.ttf"),
     )
-    word_cloud.generate(" ".join(get_words(groupid)))
+    # word_cloud.generate(" ".join(get_words(groupid)))
+    word_cloud.generate_from_frequencies(get_words(groupid))
     img = word_cloud.to_image()
     with BytesIO() as bf:
         img.save(bf, format="PNG")
