@@ -54,9 +54,10 @@ async def receive_group_msg(ctx: GroupMsg):
         logger.success("词云")
     else:
         if msg := parser_msg(ctx):
+            msg_finish = re.sub(r"[^\u4e00-\u9fa5^a-zA-Z0-9]", '', re.sub(r"\[表情\d+]", "", msg))  # 只保留字符串中的中英文和数字+过滤表情,
             words = await async_run(
-                jieba.lcut, re.sub(r"\[表情\d+]", "", msg)
-            )  # 过滤表情,并分词
+                jieba.lcut, msg_finish
+            )  # 分词
             words_finish = [
                 word for word in words if word not in stopwords and not word.isspace() and word.isprintable()
             ]  # 去除stopwords
