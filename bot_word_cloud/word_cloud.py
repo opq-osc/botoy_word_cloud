@@ -34,11 +34,11 @@ def parser_msg(ctx: GroupMsg):
 @to_async
 def build_word_cloud_pic(groupid):
     word_cloud = WordCloud(
-        width=450,
-        height=450,
+        width=420,
+        height=420,
         scale=2,
         # max_words=200,
-        max_font_size=170,
+        max_font_size=110,
         background_color="white",
         # stopwords=set(stopwords),
         # mask=mk,
