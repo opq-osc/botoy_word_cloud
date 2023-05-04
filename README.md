@@ -7,3 +7,5 @@
   "wordCloud.sendtime": ["22.20"],
   "wordCloud.resettime": ["4.20"]
 ```
+
+支持多个时间
