@@ -1,13 +1,13 @@
+from botoy import contrib
 from botoy import logger
-from botoy.contrib import to_async
 from tinydb import where
 from tinyrecord import transaction
 
 from ._shared import word_table
 
 
-@to_async
-def log_words(groupid, words: list):
+@contrib.to_async
+def log_words(groupid, bot_qq, words: list):
     """
     记录jieba处理后的关键词
     :return:
@@ -22,6 +22,5 @@ def log_words(groupid, words: list):
             else:  # 没数据
                 logger.info(f'词云: 首次记录{groupid}')
                 tr.insert(
-                    {"group": groupid, "words": words}
+                    {"group": groupid, "bot_qq": bot_qq, "words": words}
                 )
-

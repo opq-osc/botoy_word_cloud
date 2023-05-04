@@ -1,15 +1,10 @@
 import asyncio
 import base64
-import re
-import time
 from io import BytesIO
 from pathlib import Path
 
-import ujson as json
-from botoy import Action, jconfig, logger
-from botoy import GroupMsg
-from botoy.contrib import to_async
-from botoy.parser import group as gp
+from botoy import Action, logger
+from botoy import contrib
 from wordcloud import WordCloud
 
 from .database import get_words, get_all_groups
@@ -20,19 +15,8 @@ curFileDir = Path(__file__).parent
 # mk = imageio.imread(curFileDir / "1.png")
 
 
-def parser_msg(ctx: GroupMsg):
-    if msg_data := gp.reply(ctx) or gp.pic(ctx):
-        return re.sub("@.* ", "", msg_data.Content)
-    elif ctx.MsgType == "ReplayMsg":
-        msg = json.loads(ctx.Content)
-        return re.sub(f"@{msg['UserExt'][0]['QQNick']}\\s+", "", msg["Content"])
-    elif msg_data := gp.at(ctx) or ctx:
-        return msg_data.Content
-
-
-
-@to_async
-def build_word_cloud_pic(groupid):
+@contrib.to_async
+def build_word_cloud_pic(groupid) -> str:
     word_cloud = WordCloud(
         width=420,
         height=420,
@@ -55,13 +39,12 @@ def build_word_cloud_pic(groupid):
         return base64.b64encode(bf.getvalue()).decode()
 
 
-def send_to_all_group():
+async def send_to_all_group():
     logger.warning("开始向有数据的群发送今日词云")
-    action = Action(qq=jconfig.bot)
-    groups = get_all_groups()
-    for group in groups:
-        logger.warning(f"开始向群{group}发送今日词云")
-        action.sendGroupPic(
-            group, picBase64Buf=asyncio.run(build_word_cloud_pic(group))
+    groups_info = get_all_groups()
+    for group, botqq in groups_info.items():
+        logger.warning(f"bot:[{botqq}] 开始向群->{group}<-发送今日词云")
+        await Action(qq=botqq).sendGroupPic(
+            group, base64=await build_word_cloud_pic(group)
         )
-        time.sleep(3)
+        await asyncio.sleep(2)

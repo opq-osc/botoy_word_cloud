@@ -1,9 +1,10 @@
-from botoy import logger
+from botoy import logger, contrib
 from tinyrecord import transaction
 
 from ._shared import wordDB, word_table
 
 
+@contrib.to_async
 def reset_database():
     with transaction(word_table) as tr:
         with tr.lock:
