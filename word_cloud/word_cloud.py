@@ -44,7 +44,11 @@ async def send_to_all_group():
     groups_info = get_all_groups()
     for group, botqq in groups_info.items():
         logger.warning(f"bot:[{botqq}] 开始向群->{group}<-发送今日词云")
-        await Action(qq=botqq).sendGroupPic(
-            group, base64=await build_word_cloud_pic(group)
-        )
-        await asyncio.sleep(2)
+        try:
+            image_base64 = await build_word_cloud_pic(group)
+            await Action(qq=botqq).sendGroupPic(
+                group, base64=image_base64, 
+            )
+            await asyncio.sleep(2)
+        except Exception as e:
+            logger.error(f"Failed to send word cloud to group {group}: {e}")
