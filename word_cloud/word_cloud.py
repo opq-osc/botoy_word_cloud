@@ -6,7 +6,7 @@ from pathlib import Path
 from botoy import Action, logger
 from botoy import contrib
 from wordcloud import WordCloud
-
+from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_fixed
 from .database import get_words, get_all_groups
 
 curFileDir = Path(__file__).parent
@@ -44,7 +44,12 @@ async def send_to_all_group():
     groups_info = get_all_groups()
     for group, botqq in groups_info.items():
         logger.warning(f"bot:[{botqq}] 开始向群->{group}<-发送今日词云")
-        await Action(qq=botqq).sendGroupPic(
-            group, base64=await build_word_cloud_pic(group)
-        )
+        try:
+            async for attempt in AsyncRetrying(stop=stop_after_attempt(3), wait=wait_fixed(2)):
+                with attempt:
+                    await Action(qq=botqq).sendGroupPic(
+                        group, base64=await build_word_cloud_pic(group)
+                    )
+        except RetryError:
+            logger.error(f"群[{group}]词云发送失败")
         await asyncio.sleep(2)
