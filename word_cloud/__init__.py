@@ -11,10 +11,9 @@ from .word_cloud import build_word_cloud_pic, send_to_all_group
 curFileDir = Path(__file__).parent
 
 # jieba.initialize()
-stopwords = [
-    line.strip()
-    for line in open(curFileDir / "stopwords.txt", encoding="UTF-8").readlines()
-]
+with open(curFileDir / "stopwords.txt", encoding="UTF-8") as f:
+    stopwords = [line.strip() for line in f.readlines()]
+
 jieba.load_userdict(str(curFileDir / "dict.txt"))
 
 for t_s in jconfig.get("wordCloud.sendtime"):
